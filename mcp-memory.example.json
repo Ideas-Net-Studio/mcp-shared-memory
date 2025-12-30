@@ -1,0 +1,5 @@
+{ 
+  "memoryDir": "memory", 
+  "enabled": true, 
+  "description": "Project-specific memory storage (visible config)" 
+}

@@ -1,0 +1,29 @@
+# Dependency directories
+node_modules/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Build output
+dist/
+
+# Memory storage directories
+memory/
+test-memory/
+test-custom-memory/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor directories and files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+claude_desktop_config.json
+!claude_desktop_config.example.json
+
+# References directory
+references/

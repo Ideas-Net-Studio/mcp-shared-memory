@@ -1,0 +1,54 @@
+{
+  "name": "mcp-shared-memory",
+  "version": "0.1.1",
+  "description": "MCP server for AI Agents project based and shareable memory management",
+  "main": "dist/index.js",
+  "bin": {
+    "mcp-shared-memory": "dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ideas-Net-Studio/mcp-shared-memory.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "start": "node dist/index.js",
+    "dev": "tsc -w & nodemon dist/index.js",
+    "test": "node test/test-config.js",
+    "test:config": "node test/test-config.js",
+    "test:server": "node test/test-server.js",
+    "test:client": "node test/test-client.js",
+    "test:build": "node test/test-build-memory.js",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "keywords": [
+    "mcp",
+    "ai",
+    "memory",
+    "agent",
+    "project"
+  ],
+  "author": "Ideas Net Studio",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.1",
+    "lunr": "^2.3.9",
+    "uuid": "^9.0.1",
+    "zod": "^3.22.4",
+    "zod-to-json-schema": "^3.22.3"
+  },
+  "devDependencies": {
+    "@types/lunr": "^2.3.7",
+    "@types/node": "^20.10.5",
+    "@types/uuid": "^9.0.7",
+    "nodemon": "^3.0.2",
+    "typescript": "^5.3.3"
+  }
+}
