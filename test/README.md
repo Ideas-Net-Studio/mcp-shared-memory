@@ -1,6 +1,6 @@
 # MCP Memory Server Tests
 
-This directory contains test files for the MCP Memory Server v0.1.1 with multi-tool support and flexible configuration.
+This directory contains test files for the MCP Memory Server v0.1.2 with version management and message templates.
 
 ## Test Files
 
@@ -39,6 +39,27 @@ This directory contains test files for the MCP Memory Server v0.1.1 with multi-t
 
 **Run**: `npm run test:build`
 
+### `test-version-tools.js` ⭐ NEW in v0.1.2
+**Purpose**: Tests the new version management tools
+**Tests**:
+- `whats_new` tool functionality
+- `check_updates` tool functionality
+- Tool registration in tools list
+- Response content validation
+
+**Run**: `npm run test:version`
+
+### `test-message-templates.js` ⭐ NEW in v0.1.2
+**Purpose**: Tests the message template system
+**Tests**:
+- Template file existence
+- Startup banner generation
+- What's new message generation
+- Update info message generation
+- Template variable replacement
+
+**Run**: `npm run test:templates`
+
 ## Configuration Testing
 
 The tests verify the new v0.1.1 configuration system:
@@ -76,10 +97,15 @@ All tests include comprehensive cleanup that ensures:
 npm test
 npm run test:config
 
-# Run specific test
-npm run test:server
-npm run test:client
-npm run test:build
+# Run specific tests
+npm run test:server       # Server functionality
+npm run test:client       # Client operations
+npm run test:build        # Legacy build tool
+npm run test:version      # Version management tools (NEW)
+npm run test:templates    # Message templates (NEW)
+
+# Run all tests
+npm run test:all          # Runs config, templates, version, and server tests
 ```
 
 ## Expected Output

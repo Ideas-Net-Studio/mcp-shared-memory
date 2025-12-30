@@ -453,6 +453,26 @@ Rebuild the search index.
 {}
 ```
 
+### 13. whats_new
+
+Get information about what's new in the current version.
+
+```json
+{}
+```
+
+**Response**: Shows current version features, new additions, and quick start information.
+
+### 14. check_updates
+
+Check for update information and see how to update to the latest version.
+
+```json
+{}
+```
+
+**Response**: Provides current version, update instructions, and links to releases and documentation.
+
 ## Git Integration
 
 Project memory can be integrated with version control for team collaboration:

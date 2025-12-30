@@ -24,6 +24,7 @@ import {
   MemoryType
 } from "./types.js";
 import { MemoryService } from "./memory.js";
+import { getStartupBanner, getWhatsNewMessage, getUpdateInfoMessage } from "./messages/utils.js";
 
 // Configuration file interface
 interface ProjectConfig {
@@ -95,9 +96,29 @@ const memoryService = new MemoryService(memoryDir);
 
 // Initialize MCP server
 const server = new Server({
-  name: "mcp-memory",
-  version: "0.1.0"
+  name: "mcp-shared-memory",
+  version: "0.1.2"
 });
+
+// Update notification system
+const CURRENT_VERSION = "0.1.2";
+const REPO_URL = "https://github.com/Ideas-Net-Studio/mcp-shared-memory";
+
+async function checkForUpdates() {
+  try {
+    // Show startup banner with current version info
+    const banner = getStartupBanner(CURRENT_VERSION, REPO_URL);
+    console.error(banner);
+    
+    // Check for updates periodically (every 24 hours)
+    setTimeout(checkForUpdates, 24 * 60 * 60 * 1000);
+  } catch (error) {
+    // Silent fail - don't break the server if update check fails
+  }
+}
+
+// Start update check
+checkForUpdates();
 
 // Register tools capability
 server.registerCapabilities({
@@ -173,6 +194,16 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       {
         name: "rebuild_index",
         description: "Rebuild the search index",
+        inputSchema: zodToJsonSchema(z.object({})),
+      },
+      {
+        name: "whats_new",
+        description: "See what's new in the current version and get update information",
+        inputSchema: zodToJsonSchema(z.object({})),
+      },
+      {
+        name: "check_updates",
+        description: "Check for newer versions and see update information",
         inputSchema: zodToJsonSchema(z.object({})),
       },
     ],
@@ -429,6 +460,32 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             {
               type: "text",
               text: "Search index rebuilt successfully"
+            }
+          ]
+        };
+      }
+      
+      case "whats_new": {
+        const whatsNewContent = getWhatsNewMessage(CURRENT_VERSION, REPO_URL);
+        
+        return {
+          content: [
+            {
+              type: "text",
+              text: whatsNewContent
+            }
+          ]
+        };
+      }
+      
+      case "check_updates": {
+        const updateInfo = getUpdateInfoMessage(CURRENT_VERSION, REPO_URL);
+        
+        return {
+          content: [
+            {
+              type: "text",
+              text: updateInfo
             }
           ]
         };
