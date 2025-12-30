@@ -11,6 +11,10 @@ import { zodToJsonSchema } from "zod-to-json-schema";
 import path from "path";
 import os from "os";
 import fs from "fs";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 import { 
   CreateMemorySchema, 
@@ -95,15 +99,17 @@ if (projectConfig) {
 // Initialize memory service
 const memoryService = new MemoryService(memoryDir);
 
+// Load version from package.json
+const packageJsonPath = path.join(__dirname, '../package.json');
+const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+const CURRENT_VERSION = packageJson.version;
+const REPO_URL = "https://github.com/Ideas-Net-Studio/mcp-shared-memory";
+
 // Initialize MCP server
 const server = new Server({
   name: "mcp-shared-memory",
-  version: "0.1.3"
+  version: CURRENT_VERSION
 });
-
-// Update notification system
-const CURRENT_VERSION = "0.1.3";
-const REPO_URL = "https://github.com/Ideas-Net-Studio/mcp-shared-memory";
 
 async function checkForUpdates() {
   try {

@@ -15,8 +15,9 @@
   ],
   "type": "module",
   "scripts": {
-    "build": "tsc && npm run copy-templates",
+    "build": "tsc && npm run copy-templates && npm run inject-version",
     "copy-templates": "mkdir -p dist/messages && cp src/messages/*.md dist/messages/",
+    "inject-version": "node scripts/inject-version.js",
     "prepublishOnly": "npm run build",
     "start": "node dist/index.js",
     "dev": "tsc -w & nodemon dist/index.js",
