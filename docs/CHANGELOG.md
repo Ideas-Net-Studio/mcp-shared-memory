@@ -1,5 +1,37 @@
 # Changelog
 
+## v0.1.2 - User Experience & Version Management
+
+### New Features
+- **Startup Banner**: Beautiful ASCII art banner displayed on server start showing version and quick links
+- **Update Notifications**: Automatic update checking system (runs every 24 hours)
+- **Version Tools**: Added two new MCP tools for version information:
+  - `whats_new`: Shows current version features and what's new
+  - `check_updates`: Provides update information and instructions
+- **Message Template System**: Dynamic message templates with variable replacement for consistent messaging
+
+### Improvements
+- **Better Branding**: Consistent "shared-memory" naming in all configuration examples
+- **Professional Polish**: Enhanced user experience with informative startup messages
+- **Self-Documenting**: Users can query the server directly about version and updates
+- **Update Awareness**: Passive update checking keeps users informed without being intrusive
+
+### Technical Changes
+- Added `src/messages/` directory with message templates:
+  - `startup-banner.md`: Server startup banner template
+  - `whats-new.md`: What's new message template
+  - `update-info.md`: Update instructions template
+  - `utils.ts`: Template loading and processing utilities
+- Updated server version tracking with `CURRENT_VERSION` constant
+- Improved banner formatting with proper URL display
+
+### Documentation Updates
+- Updated README.md with version check hints
+- Added instructions for checking what's new
+- Updated configuration examples to use "shared-memory" naming
+
+---
+
 ## v0.1.1 - Multi-Tool Compatibility & Enhanced Configuration
 
 ### Major Features

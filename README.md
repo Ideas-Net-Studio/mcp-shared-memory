@@ -2,6 +2,8 @@
 
 A Model Context Protocol (MCP) server that provides structured memory management across chat sessions for all MCP-enabled tools and applications, specifically designed for project-based work.
 
+> 💡 **New in v0.1.2**: Version tracking and update notifications! Ask your AI assistant: "What's new in mcp-shared-memory?"
+
 ## Quick Start
 
 ### Usage with npx (Recommended)
@@ -11,7 +13,7 @@ You can run the server directly without installing it:
 ```json
 {
   "mcpServers": {
-    "memory": {
+    "shared-memory": {
       "command": "npx",
       "args": ["-y", "mcp-shared-memory"]
     }
@@ -33,7 +35,7 @@ npm run build
 # Configure your MCP tool
 {
   "mcpServers": {
-    "memory": {
+    "shared-memory": {
       "command": "node",
       "args": ["/absolute/path/to/mcp-memory/dist/index.js"]
     }

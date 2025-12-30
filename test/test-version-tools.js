@@ -4,8 +4,8 @@ import { spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
-// Test configuration for v0.1.1
-const testDir = './test-server-temp';
+// Test configuration for version tools
+const testDir = './test-version-temp';
 const configPath = path.join(testDir, '.mcp-memory.json');
 
 // Cleanup function
@@ -40,7 +40,7 @@ console.log(`Created test directory: ${testDir}`);
 const config = {
   memoryDir: '.context/memory',
   enabled: true,
-  description: 'Test project for server functionality'
+  description: 'Test project for version tools'
 };
 
 fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
@@ -149,88 +149,119 @@ async function sendRequest(request, timeoutMs = 5000) {
   });
 }
 
-// Test the server
-async function testServer() {
+// Test the version tools
+async function testVersionTools() {
   try {
-    console.log('Testing MCP server with project configuration...');
+    console.log('Testing version management tools...\n');
     
-    // Test 1: List tools
-    console.log('\n1. Testing tools list...');
-    const listToolsRequest = {
+    // Test 1: whats_new tool
+    console.log('1. Testing whats_new tool...');
+    const whatsNewRequest = {
       jsonrpc: '2.0',
       id: 1,
-      method: 'tools/list'
+      method: 'tools/call',
+      params: {
+        name: 'whats_new',
+        arguments: {}
+      }
     };
     
-    const toolsResponse = await sendRequest(listToolsRequest);
-    console.log('✅ Tools list response received');
-    console.log(`Found ${toolsResponse.tools?.length || 0} tools`);
+    const whatsNewResponse = await sendRequest(whatsNewRequest);
     
-    // Test 2: Create a memory
-    console.log('\n2. Testing memory creation...');
-    const createMemoryRequest = {
+    if (!whatsNewResponse.result || !whatsNewResponse.result.content) {
+      throw new Error('whats_new tool returned invalid response');
+    }
+    
+    const whatsNewContent = whatsNewResponse.result.content[0].text;
+    
+    // Verify response contains expected information
+    if (!whatsNewContent.includes('v0.1.2')) {
+      throw new Error('whats_new response missing version information');
+    }
+    if (!whatsNewContent.includes('New in v0.1.2')) {
+      throw new Error('whats_new response missing new features section');
+    }
+    if (!whatsNewContent.includes('Multi-Tool Compatibility')) {
+      throw new Error('whats_new response missing core features');
+    }
+    
+    console.log('✅ whats_new tool works correctly');
+    console.log(`   Response length: ${whatsNewContent.length} characters`);
+    
+    // Test 2: check_updates tool
+    console.log('\n2. Testing check_updates tool...');
+    const checkUpdatesRequest = {
       jsonrpc: '2.0',
       id: 2,
       method: 'tools/call',
       params: {
-        name: 'create_memory',
-        arguments: {
-          title: 'Test Memory',
-          type: 'concept',
-          tags: ['test', 'server'],
-          content: 'This is a test memory created by the server test.'
-        }
+        name: 'check_updates',
+        arguments: {}
       }
     };
     
-    const createResponse = await sendRequest(createMemoryRequest);
-    console.log('✅ Memory creation response received');
+    const checkUpdatesResponse = await sendRequest(checkUpdatesRequest);
     
-    // Test 3: Search memories
-    console.log('\n3. Testing memory search...');
-    const searchRequest = {
+    if (!checkUpdatesResponse.result || !checkUpdatesResponse.result.content) {
+      throw new Error('check_updates tool returned invalid response');
+    }
+    
+    const updateContent = checkUpdatesResponse.result.content[0].text;
+    
+    // Verify response contains expected information
+    if (!updateContent.includes('v0.1.2')) {
+      throw new Error('check_updates response missing version information');
+    }
+    if (!updateContent.includes('npx')) {
+      throw new Error('check_updates response missing update instructions');
+    }
+    if (!updateContent.includes('GitHub Releases')) {
+      throw new Error('check_updates response missing release information');
+    }
+    
+    console.log('✅ check_updates tool works correctly');
+    console.log(`   Response length: ${updateContent.length} characters`);
+    
+    // Test 3: Verify tools are listed
+    console.log('\n3. Verifying version tools are in tools list...');
+    const listToolsRequest = {
       jsonrpc: '2.0',
       id: 3,
-      method: 'tools/call',
-      params: {
-        name: 'search_memories',
-        arguments: {
-          query: 'test'
-        }
-      }
+      method: 'tools/list'
     };
     
-    const searchResponse = await sendRequest(searchRequest);
-    console.log('✅ Memory search response received');
+    const toolsResponse = await sendRequest(listToolsRequest);
+    const tools = toolsResponse.result.tools;
     
-    // Test 4: List memories
-    console.log('\n4. Testing memory listing...');
-    const listRequest = {
-      jsonrpc: '2.0',
-      id: 4,
-      method: 'tools/call',
-      params: {
-        name: 'list_memories',
-        arguments: {
-          types: ['concept']
-        }
-      }
-    };
+    const hasWhatsNew = tools.some(tool => tool.name === 'whats_new');
+    const hasCheckUpdates = tools.some(tool => tool.name === 'check_updates');
     
-    const listResponse = await sendRequest(listRequest);
-    console.log('✅ Memory list response received');
+    if (!hasWhatsNew) {
+      throw new Error('whats_new tool not found in tools list');
+    }
+    if (!hasCheckUpdates) {
+      throw new Error('check_updates tool not found in tools list');
+    }
     
-    console.log('\n🎉 All server tests PASSED!');
+    console.log('✅ Both version tools are properly registered');
+    console.log(`   Total tools available: ${tools.length}`);
+    
+    console.log('\n🎉 All version tool tests PASSED!');
+    console.log('\nTest Summary:');
+    console.log('  ✅ whats_new tool responds correctly');
+    console.log('  ✅ check_updates tool responds correctly');
+    console.log('  ✅ Both tools are registered in tools list');
+    console.log('  ✅ Responses contain expected version information');
     
     // Clean up
-    fs.rmSync(testDir, { recursive: true, force: true });
-    console.log('🧹 Cleaned up test directory');
+    cleanup();
     
   } catch (error) {
-    console.error('❌ Server test FAILED:', error.message);
+    console.error('\n❌ Version tools test FAILED:', error.message);
+    cleanup();
     process.exit(1);
   }
 }
 
 // Run the test
-testServer(); 
+testVersionTools();

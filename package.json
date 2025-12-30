@@ -1,6 +1,6 @@
 {
   "name": "mcp-shared-memory",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "MCP server for AI Agents project based and shareable memory management",
   "main": "dist/index.js",
   "bin": {
@@ -15,7 +15,8 @@
   ],
   "type": "module",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm run copy-templates",
+    "copy-templates": "mkdir -p dist/messages && cp src/messages/*.md dist/messages/",
     "prepublishOnly": "npm run build",
     "start": "node dist/index.js",
     "dev": "tsc -w & nodemon dist/index.js",
@@ -24,6 +25,9 @@
     "test:server": "node test/test-server.js",
     "test:client": "node test/test-client.js",
     "test:build": "node test/test-build-memory.js",
+    "test:version": "node test/test-version-tools.js",
+    "test:templates": "node test/test-message-templates.js",
+    "test:all": "npm run test:config && npm run test:templates && npm run test:version && npm run test:server",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
