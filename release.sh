@@ -78,14 +78,15 @@ if [ "$VERSION_CHANGED" = true ]; then
   echo "✅ Version bump committed"
 fi
 
+# Build before testing to ensure correct version is injected
+echo ""
+echo "🏗️  Building..."
+npm run build
+
 # Run tests
 echo ""
 echo "🧪 Running tests..."
 npm run test:all
-
-echo ""
-echo "🏗️  Building..."
-npm run build
 
 echo ""
 echo "📝 Preview package contents..."
