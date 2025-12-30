@@ -1,6 +1,6 @@
 **MCP Shared Memory v{VERSION} - What's New**
 
-## New in v0.1.2
+## New in v{VERSION}
 - **Startup Banner**: Beautiful ASCII banner showing version and quick info
 - **Update Notifications**: Automatic update checking (every 24 hours)
 - **New Tools**: `whats_new` and `check_updates` for version information

@@ -175,10 +175,10 @@ async function testVersionTools() {
     const whatsNewContent = whatsNewResponse.result.content[0].text;
     
     // Verify response contains expected information
-    if (!whatsNewContent.includes('v0.1.2')) {
+    if (!whatsNewContent.includes('v0.1.3')) {
       throw new Error('whats_new response missing version information');
     }
-    if (!whatsNewContent.includes('New in v0.1.2')) {
+    if (!whatsNewContent.includes('New in v0.1.3')) {
       throw new Error('whats_new response missing new features section');
     }
     if (!whatsNewContent.includes('Multi-Tool Compatibility')) {
@@ -209,7 +209,7 @@ async function testVersionTools() {
     const updateContent = checkUpdatesResponse.result.content[0].text;
     
     // Verify response contains expected information
-    if (!updateContent.includes('v0.1.2')) {
+    if (!updateContent.includes('v0.1.3')) {
       throw new Error('check_updates response missing version information');
     }
     if (!updateContent.includes('npx')) {
