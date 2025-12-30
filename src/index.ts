@@ -35,8 +35,8 @@ interface ProjectConfig {
 
 // Load project configuration from .mcp-memory.json or mcp-memory.json
 function loadProjectConfig(): { config: ProjectConfig; projectDir: string } | null {
-  // Start from PWD environment variable (automatically set by shell) or process.cwd()
-  let currentDir = process.env.PWD || process.cwd();
+  // Start from process.cwd() which reflects the actual working directory
+  let currentDir = process.cwd();
   
   // Search up directory tree for .mcp-memory.json or mcp-memory.json
   while (currentDir !== path.dirname(currentDir)) {

@@ -3,9 +3,16 @@
 import { spawn } from 'child_process';
 import path from 'path';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+// Get the directory of the current module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Configuration detection test for v0.1.1 with multi-tool support
 const testDir = './test-config-temp';
+const serverPath = path.resolve(__dirname, '../dist/index.js');
 const hiddenConfigPath = path.join(testDir, '.mcp-memory.json');
 const visibleConfigPath = path.join(testDir, 'mcp-memory.json');
 
@@ -46,10 +53,9 @@ const hiddenConfig = {
 };
 fs.writeFileSync(hiddenConfigPath, JSON.stringify(hiddenConfig, null, 2));
 
-const result1 = spawn('node', ['../dist/index.js'], {
+const result1 = spawn('node', [serverPath], {
   cwd: testDir,
-  stdio: ['pipe', 'pipe', 'pipe'],
-  timeout: 3000
+  stdio: ['pipe', 'pipe', 'pipe']
 });
 
 let output1 = '';
@@ -60,7 +66,13 @@ result1.stderr.on('data', (data) => {
   output1 += data.toString();
 });
 
+// Set a timeout to kill the process
+const timeout1 = setTimeout(() => {
+  result1.kill('SIGTERM');
+}, 1000);
+
 result1.on('close', (code) => {
+  clearTimeout(timeout1);
   const hiddenTest = output1.includes('Using project memory directory') && 
                    output1.includes('.context/memory');
   console.log(hiddenTest ? '✅ Hidden config test PASSED' : '❌ Hidden config test FAILED');
@@ -76,10 +88,9 @@ result1.on('close', (code) => {
   };
   fs.writeFileSync(visibleConfigPath, JSON.stringify(visibleConfig, null, 2));
   
-  const result2 = spawn('node', ['../dist/index.js'], {
+  const result2 = spawn('node', [serverPath], {
     cwd: testDir,
-    stdio: ['pipe', 'pipe', 'pipe'],
-    timeout: 3000
+    stdio: ['pipe', 'pipe', 'pipe']
   });
   
   let output2 = '';
@@ -90,7 +101,13 @@ result1.on('close', (code) => {
     output2 += data.toString();
   });
   
+  // Set a timeout to kill the process
+  const timeout2 = setTimeout(() => {
+    result2.kill('SIGTERM');
+  }, 1000);
+  
   result2.on('close', (code2) => {
+    clearTimeout(timeout2);
     const visibleTest = output2.includes('Using project memory directory') && 
                        output2.includes('memory');
     console.log(visibleTest ? '✅ Visible config test PASSED' : '❌ Visible config test FAILED');
@@ -99,10 +116,9 @@ result1.on('close', (code) => {
     console.log('\n3. Testing no configuration (global memory)...');
     fs.rmSync(visibleConfigPath);
     
-    const result3 = spawn('node', ['../dist/index.js'], {
+    const result3 = spawn('node', [serverPath], {
       cwd: testDir,
-      stdio: ['pipe', 'pipe', 'pipe'],
-      timeout: 3000
+      stdio: ['pipe', 'pipe', 'pipe']
     });
     
     let output3 = '';
@@ -113,7 +129,13 @@ result1.on('close', (code) => {
       output3 += data.toString();
     });
     
+    // Set a timeout to kill the process
+    const timeout3 = setTimeout(() => {
+      result3.kill('SIGTERM');
+    }, 1000);
+    
     result3.on('close', (code3) => {
+      clearTimeout(timeout3);
       const globalTest = output3.includes('Using global memory directory');
       console.log(globalTest ? '✅ Global config test PASSED' : '❌ Global config test FAILED');
       
