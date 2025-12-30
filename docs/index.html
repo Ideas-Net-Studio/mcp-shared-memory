@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MCP Memory - Structured Memory for AI Assistants</title>
+    <title>MCP Shared Memory - Shareble Memory for AI Assistants</title>
     <style>
       :root {
         --bg-color: #0d1117;
@@ -247,7 +247,7 @@
           <a href="#features">Features</a>
           <a href="#configuration">Configuration</a>
           <a
-            href="https://github.com/griiettner/mcp-memory"
+            href="https://github.com/Ideas-Net-Studio/mcp-shared-memory"
             target="_blank"
             class="btn btn-secondary"
             style="padding: 6px 12px; font-size: 0.9rem"
@@ -259,14 +259,13 @@
 
     <main class="container">
       <section class="hero">
-        <h1>Your AI Copilot's Long-Term Memory</h1>
+        <h1>AI Memory That Can Be Shared With Your Team</h1>
         <p>
-          A Model Context Protocol (MCP) server that provides structured, persistent memory management across chat
-          sessions for all MCP-enabled tools.
+          A Model Context Protocol (MCP) server that gives your AI assistants a permanent memory they can share across all your tools and with your entire team.
         </p>
         <div class="cta-buttons">
           <a href="#quick-start" class="btn btn-primary">Get Started</a>
-          <a href="https://github.com/griiettner/mcp-memory" target="_blank" class="btn btn-secondary">View Source</a>
+          <a href="https://github.com/Ideas-Net-Studio/mcp-shared-memory" target="_blank" class="btn btn-secondary">View Source</a>
         </div>
       </section>
 
@@ -311,13 +310,13 @@ npm install
 # Build the project
 npm run build</code></pre>
 
-        <h3>2. Configuration (Claude Desktop)</h3>
-        <p>Add this to your Claude Desktop configuration file:</p>
+        <h3>2. Configuration</h3>
+        <p>Add this to your tool's mcpServers configuration:</p>
         <pre><code>{
   "mcpServers": {
-    "memory": {
-      "command": "node",
-      "args": ["/path/to/mcp-memory/dist/index.js"]
+    "shared-memory": {
+      "command": "npx",
+      "args": ["-y", "mcp-shared-memory"]
     }
   }
 }</code></pre>
@@ -388,7 +387,7 @@ npm run build</code></pre>
           contribute.
         </p>
         <div style="margin-top: 25px">
-          <a href="https://github.com/griiettner/mcp-memory/pulls" target="_blank" class="btn btn-primary"
+          <a href="https://github.com/Ideas-Net-Studio/mcp-shared-memory/pulls" target="_blank" class="btn btn-primary"
             >Open Pull Request</a
           >
         </div>
