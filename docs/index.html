@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MCP Memory - Structured Memory for AI Assistants</title>
+    <style>
+      :root {
+        --bg-color: #0d1117;
+        --text-color: #c9d1d9;
+        --heading-color: #ffffff;
+        --accent-color: #58a6ff;
+        --accent-hover: #79c0ff;
+        --border-color: #30363d;
+        --code-bg: #161b22;
+        --card-bg: #161b22;
+        --header-bg: rgba(13, 17, 23, 0.9);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.6;
+      }
+
+      a {
+        color: var(--accent-color);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+
+      a:hover {
+        color: var(--accent-hover);
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Header */
+      header {
+        position: sticky;
+        top: 0;
+        background: var(--header-bg);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-color);
+        padding: 20px 0;
+        z-index: 100;
+      }
+
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--heading-color);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 20px;
+      }
+
+      /* Hero */
+      .hero {
+        padding: 80px 0;
+        text-align: center;
+      }
+
+      h1 {
+        font-size: 3.5rem;
+        color: var(--heading-color);
+        margin-bottom: 20px;
+        letter-spacing: -1px;
+        background: linear-gradient(120deg, #fff, #888);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .hero p {
+        font-size: 1.25rem;
+        max-width: 600px;
+        margin: 0 auto 40px;
+        color: #8b949e;
+      }
+
+      .cta-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .btn-primary {
+        background-color: #238636;
+        color: #fff;
+        border: 1px solid rgba(240, 246, 252, 0.1);
+      }
+
+      .btn-primary:hover {
+        background-color: #2ea043;
+      }
+
+      .btn-secondary {
+        background-color: var(--card-bg);
+        color: var(--heading-color);
+        border: 1px solid var(--border-color);
+      }
+
+      .btn-secondary:hover {
+        border-color: #8b949e;
+      }
+
+      /* Content Sections */
+      section {
+        padding: 60px 0;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      section:last-child {
+        border-bottom: none;
+      }
+
+      h2 {
+        font-size: 2rem;
+        color: var(--heading-color);
+        margin-bottom: 24px;
+      }
+
+      h3 {
+        font-size: 1.5rem;
+        color: var(--heading-color);
+        margin: 20px 0 10px;
+      }
+
+      /* Feature Grid */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+      }
+
+      .card {
+        background: var(--card-bg);
+        padding: 24px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+      }
+
+      .card h3 {
+        margin-top: 0;
+        font-size: 1.2rem;
+      }
+
+      /* Code Blocks */
+      pre {
+        background-color: var(--code-bg);
+        padding: 16px;
+        border-radius: 8px;
+        overflow-x: auto;
+        border: 1px solid var(--border-color);
+        margin: 16px 0;
+      }
+
+      code {
+        font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+        font-size: 0.9em;
+        color: var(--text-color);
+      }
+
+      /* Tables */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 12px;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      th {
+        color: var(--heading-color);
+      }
+
+      /* Footer */
+      footer {
+        padding: 40px 0;
+        text-align: center;
+        color: #8b949e;
+        font-size: 0.9rem;
+        border-top: 1px solid var(--border-color);
+        margin-top: 40px;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2.5rem;
+        }
+        .nav-links {
+          display: none;
+        } /* Simplified for single file */
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container nav">
+        <div class="logo">
+          <svg height="32" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true" fill="white">
+            <path
+              d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"
+            ></path>
+          </svg>
+          <span>mcp-memory</span>
+        </div>
+        <div class="nav-links">
+          <a href="#quick-start">Quick Start</a>
+          <a href="#features">Features</a>
+          <a href="#configuration">Configuration</a>
+          <a
+            href="https://github.com/griiettner/mcp-memory"
+            target="_blank"
+            class="btn btn-secondary"
+            style="padding: 6px 12px; font-size: 0.9rem"
+            >GitHub</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <h1>Your AI Copilot's Long-Term Memory</h1>
+        <p>
+          A Model Context Protocol (MCP) server that provides structured, persistent memory management across chat
+          sessions for all MCP-enabled tools.
+        </p>
+        <div class="cta-buttons">
+          <a href="#quick-start" class="btn btn-primary">Get Started</a>
+          <a href="https://github.com/griiettner/mcp-memory" target="_blank" class="btn btn-secondary">View Source</a>
+        </div>
+      </section>
+
+      <section id="features">
+        <h2>Key Features</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>📂 Project-Specific Memory</h3>
+            <p>Automatically detects project contexts and stores memories within your project's directory structure.</p>
+          </div>
+          <div class="card">
+            <h3>🧠 Structured Storage</h3>
+            <p>Organizes knowledge into Entities, Concepts, and Sessions for better retrieval and context.</p>
+          </div>
+          <div class="card">
+            <h3>🔍 Full-Text Search</h3>
+            <p>Powered by Lunr.js to allow your AI to fuzzy search through past decisions and patterns.</p>
+          </div>
+          <div class="card">
+            <h3>🤝 Multi-Tool Compatible</h3>
+            <p>Works seamlessly with Claude Desktop, Cursor, Windsurf, Cline, and any other MCP client.</p>
+          </div>
+          <div class="card">
+            <h3>🔒 Git Integration</h3>
+            <p>Memories are stored as Markdown files, making them easy to commit, review, and share with your team.</p>
+          </div>
+          <div class="card">
+            <h3>⚙️ Flexible Config</h3>
+            <p>Configure directory paths and settings via simple JSON configuration files.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="quick-start">
+        <h2>Quick Start</h2>
+        <p>Install the server and configure it with your favorite MCP tool.</p>
+
+        <h3>1. Installation</h3>
+        <pre><code># Install dependencies
+npm install
+
+# Build the project
+npm run build</code></pre>
+
+        <h3>2. Configuration (Claude Desktop)</h3>
+        <p>Add this to your Claude Desktop configuration file:</p>
+        <pre><code>{
+  "mcpServers": {
+    "memory": {
+      "command": "node",
+      "args": ["/path/to/mcp-memory/dist/index.js"]
+    }
+  }
+}</code></pre>
+      </section>
+
+      <section id="configuration">
+        <h2>Configuration</h2>
+        <p>Create a configuration file in your project root to customize behavior.</p>
+
+        <div class="grid" style="grid-template-columns: 1fr 1fr; margin-top: 20px">
+          <div>
+            <h3>Recommended (.mcp-memory.json)</h3>
+            <pre><code>{
+  "memoryDir": ".context/memory",
+  "enabled": true,
+  "description": "My project"
+}</code></pre>
+          </div>
+          <div>
+            <h3>Visible (mcp-memory.json)</h3>
+            <pre><code>{
+  "memoryDir": "memory", 
+  "enabled": true,
+  "description": "My project"
+}</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="docs-links">
+        <h2>Documentation & Resources</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Document</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="USAGE.md">USAGE.md</a></td>
+              <td>Complete usage guide with setup for all MCP tools</td>
+            </tr>
+            <tr>
+              <td><a href="CHANGELOG.md">CHANGELOG.md</a></td>
+              <td>Version history and release notes</td>
+            </tr>
+            <tr>
+              <td><a href="instructions_template.md">instructions_template.md</a></td>
+              <td>AI assistant instructions template</td>
+            </tr>
+            <tr>
+              <td><a href="CONTRIBUTING.md">CONTRIBUTING.md</a></td>
+              <td>Contribution guidelines and workflow</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="contributing">
+        <h2>Contributing</h2>
+        <p>
+          We welcome contributions to help improve this project! Whether it's fixing bugs, adding new features, or
+          improving documentation.
+        </p>
+        <p style="margin-top: 15px">
+          Please review the <a href="CONTRIBUTING.md">CONTRIBUTING.md</a> file for detailed guidelines on how to
+          contribute.
+        </p>
+        <div style="margin-top: 25px">
+          <a href="https://github.com/griiettner/mcp-memory/pulls" target="_blank" class="btn btn-primary"
+            >Open Pull Request</a
+          >
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>Released under the MIT License</p>
+        <p>Fork of <a href="https://github.com/ebailey78/mcp-memory">ebailey78/mcp-memory</a></p>
+      </div>
+    </footer>
+  </body>
+</html>
