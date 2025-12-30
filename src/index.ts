@@ -35,7 +35,8 @@ interface ProjectConfig {
 
 // Load project configuration from .mcp-memory.json or mcp-memory.json
 function loadProjectConfig(): { config: ProjectConfig; projectDir: string } | null {
-  let currentDir = process.cwd();
+  // Start from PWD environment variable (automatically set by shell) or process.cwd()
+  let currentDir = process.env.PWD || process.cwd();
   
   // Search up directory tree for .mcp-memory.json or mcp-memory.json
   while (currentDir !== path.dirname(currentDir)) {
@@ -97,11 +98,11 @@ const memoryService = new MemoryService(memoryDir);
 // Initialize MCP server
 const server = new Server({
   name: "mcp-shared-memory",
-  version: "0.1.2"
+  version: "0.1.3"
 });
 
 // Update notification system
-const CURRENT_VERSION = "0.1.2";
+const CURRENT_VERSION = "0.1.3";
 const REPO_URL = "https://github.com/Ideas-Net-Studio/mcp-shared-memory";
 
 async function checkForUpdates() {

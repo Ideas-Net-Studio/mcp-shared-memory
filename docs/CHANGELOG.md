@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.1.3 - Project Configuration Detection Fix
+
+### Bug Fixes
+- **Fixed project configuration detection**: Server now correctly detects `.mcp-memory.json` files when launched from terminals
+  - Previously, `process.cwd()` would point to the MCP server installation directory instead of the user's working directory
+  - Now uses `PWD` environment variable (automatically set by shells like Warp, VSCode terminal, Windsurf terminal) as the starting point for config search
+  - Falls back to `process.cwd()` if `PWD` is not available for compatibility
+  - This fix ensures project-specific memory directories are properly detected when working in project folders
+
+### Technical Changes
+- Modified `loadProjectConfig()` to check `process.env.PWD` before `process.cwd()`
+- Removed debug logging statements for cleaner console output
+
+---
+
 ## v0.1.2 - User Experience & Version Management
 
 ### New Features
